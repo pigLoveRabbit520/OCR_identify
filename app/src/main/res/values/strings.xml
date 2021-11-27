@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OCR_SDK</string>
+    <string name="app_name">猪兔OCR</string>
     <string name="idCardLabel">身份证识别</string>
     <string name="bankCardLabel">银行卡识别</string>
     <string name="generalLabel">通用文字识别</string>

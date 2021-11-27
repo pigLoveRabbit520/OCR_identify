@@ -20,5 +20,5 @@
 ![image](/pics/idcard5.png )
 
 ## 说明
-从[这里]改的(https://github.com/wenchaosong/OCR_identify)
+从[这里](https://github.com/wenchaosong/OCR_identify)改的
 
