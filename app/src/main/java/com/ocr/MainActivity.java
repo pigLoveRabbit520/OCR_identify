@@ -48,29 +48,29 @@ public class MainActivity extends AppCompatActivity {
 
         mContent = (TextView) findViewById(R.id.content);
 
-        // 正面(手动)
-        findViewById(R.id.id_card_front_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
-                intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
-                        FileUtil.getSaveFile(getApplication()).getAbsolutePath());
-                intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_FRONT);
-                startActivityForResult(intent, REQUEST_CODE_CAMERA);
-            }
-        });
-
-        // 反面(手动)
-        findViewById(R.id.id_card_back_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
-                intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
-                        FileUtil.getSaveFile(getApplication()).getAbsolutePath());
-                intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_BACK);
-                startActivityForResult(intent, REQUEST_CODE_CAMERA);
-            }
-        });
+//        // 正面(手动)
+//        findViewById(R.id.id_card_front_button).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+//                intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
+//                        FileUtil.getSaveFile(getApplication()).getAbsolutePath());
+//                intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_FRONT);
+//                startActivityForResult(intent, REQUEST_CODE_CAMERA);
+//            }
+//        });
+//
+//        // 反面(手动)
+//        findViewById(R.id.id_card_back_button).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+//                intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
+//                        FileUtil.getSaveFile(getApplication()).getAbsolutePath());
+//                intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_BACK);
+//                startActivityForResult(intent, REQUEST_CODE_CAMERA);
+//            }
+//        });
 
         // 正面(自动)
         findViewById(R.id.id_card_front_button_auto).setOnClickListener(new View.OnClickListener() {
