@@ -16,10 +16,13 @@ import com.baidu.ocr.sdk.exception.OCRError;
 import com.baidu.ocr.sdk.model.AccessToken;
 import com.baidu.ocr.sdk.model.BankCardParams;
 import com.baidu.ocr.sdk.model.BankCardResult;
+import com.baidu.ocr.sdk.model.GeneralParams;
+import com.baidu.ocr.sdk.model.GeneralResult;
 import com.baidu.ocr.sdk.model.IDCardParams;
 import com.baidu.ocr.sdk.model.IDCardResult;
 import com.baidu.ocr.sdk.model.OcrRequestParams;
 import com.baidu.ocr.sdk.model.OcrResponseResult;
+import com.baidu.ocr.sdk.model.WordSimple;
 import com.baidu.ocr.ui.camera.CameraActivity;
 import com.baidu.ocr.ui.camera.CameraNativeHelper;
 import com.baidu.ocr.ui.camera.CameraView;
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_CAMERA = 102;
     private static final int REQUEST_CODE_DRIVING_LICENSE = 103;
     private static final int REQUEST_CODE_VEHICLE_LICENSE = 104;
+    private static final int REQUEST_CODE_ACCURATE_BASIC = 107;
     private TextView mContent;
 
     // https://console.bce.baidu.com/
@@ -99,6 +103,19 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(CameraActivity.KEY_NATIVE_MANUAL, true);
                 intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_BACK);
                 startActivityForResult(intent, REQUEST_CODE_CAMERA);
+            }
+        });
+
+        // 通用文字识别(高精度版)
+        findViewById(R.id.accurate_basic_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+                intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
+                        FileUtil.getSaveFile(getApplication()).getAbsolutePath());
+                intent.putExtra(CameraActivity.KEY_CONTENT_TYPE,
+                        CameraActivity.CONTENT_TYPE_GENERAL);
+                startActivityForResult(intent, REQUEST_CODE_ACCURATE_BASIC);
             }
         });
 
@@ -235,6 +252,12 @@ public class MainActivity extends AppCompatActivity {
             String filePath = FileUtil.getSaveFile(getApplicationContext()).getAbsolutePath();
             recVehicleCard(filePath);
         }
+
+        // 识别成功回调，通用文字识别（高精度版）
+        if (requestCode == REQUEST_CODE_ACCURATE_BASIC && resultCode == Activity.RESULT_OK) {
+            String filePath = FileUtil.getSaveFile(getApplicationContext()).getAbsolutePath();
+            recAccurateBasicText(filePath);
+        }
     }
 
     /**
@@ -321,6 +344,37 @@ public class MainActivity extends AppCompatActivity {
                             "银行名称: " + (!TextUtils.isEmpty(result.getBankName()) ? result.getBankName() : "") + "\n" +
                             "银行类型: " + type + "\n");
                 }
+            }
+
+            @Override
+            public void onError(OCRError error) {
+                Toast.makeText(MainActivity.this, "识别出错,请查看log错误代码", Toast.LENGTH_SHORT).show();
+                Log.d("MainActivity", "onError: " + error.getMessage());
+            }
+        });
+    }
+
+    /**
+     * 解析通用文字（高精度）
+     *
+     * @param filePath 图片路径
+     */
+    private void recAccurateBasicText(String filePath) {
+        GeneralParams param = new GeneralParams();
+        param.setDetectDirection(true);
+        param.setVertexesLocation(true);
+        param.setRecognizeGranularity(GeneralParams.GRANULARITY_SMALL);
+        param.setImageFile(new File(filePath));
+        OCR.getInstance(this).recognizeAccurateBasic(param, new OnResultListener<GeneralResult>() {
+            @Override
+            public void onResult(GeneralResult result) {
+                StringBuilder sb = new StringBuilder();
+                for (WordSimple wordSimple : result.getWordList()) {
+                    WordSimple word = wordSimple;
+                    sb.append(word.getWords());
+                    sb.append("\n");
+                }
+                mContent.setText(sb.toString());
             }
 
             @Override
