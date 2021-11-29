@@ -9,7 +9,7 @@
 ### 好用的话大家可以 star,有好的建议也可以提出来哦
 ### 身份证自动识别已集成
 
-![image](/pics/idcard1.png )
+![image](/pics/main.jpg )
 
 ![image](/pics/idcard2.png )
 
